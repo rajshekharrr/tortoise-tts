@@ -10,6 +10,10 @@ This repo contains all the code needed to run Tortoise TTS in inference mode.
 Manuscript: https://arxiv.org/abs/2305.07243
 
 ### Version history
+#### v2.7; 2023/7/26
+- Bug fixes
+- Added Apple Silicon Support
+- Updated Transformer version
 #### v2.6; 2023/7/26
 - Bug fixes
 
@@ -86,6 +90,31 @@ Optionally, pytorch can be installed in the base environment, so that other cond
 > **Note:** When you want to use tortoise-tts, you will always have to ensure the `tortoise` conda environment is activated.
 
 If you are on windows, you may also need to install pysoundfile: `conda install -c conda-forge pysoundfile`
+
+## Apple Silicon
+
+On MacOS 13+ with M1/M2 chips you need to install the nighly version of pytorch, as stated in the official page you can do:
+
+```shell
+pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cpu
+```
+
+Be sure to do that after you activate the environment. If you don't use conda the commands would look like this:
+
+```shell
+python3.10 -m venv .venv
+source .venv/bin/activate
+pip install numba inflect
+pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cpu
+pip install transformers
+git clone https://github.com/neonbjb/tortoise-tts.git
+cd tortoise-tts
+pip install .
+```
+
+Be aware that DeepSpeed is disabled on Apple Silicon since it does not work. The flag `--use_deepspeed` is ignored.
+You may need to prepend `PYTORCH_ENABLE_MPS_FALLBACK=1` to the commands below to make them work since MPS does not support all the operations in Pytorch.
+
 
 ### do_tts.py
 
